@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div style="display: inline-flex; align-items: center; justify-content: center; width: 4rem; height: 4rem; border-radius: var(--radius); background-color: var(--color-primary); color: var(--color-primary-fg); margin-bottom: var(--space-6);">
+        <i data-lucide="hexagon" style="width: 32px; height: 32px;"></i>
+    </div>
+    <h1 class="hero-title">{{ app_header }}</h1>
+    <p class="hero-description">
+        {{ app_description }}
+    </p>
+</div>
+
+<div class="links-grid">
+    <a href="/metrics" class="card card-clickable link-card" title="Открыть метрики вызовов инструментов">
+        <div class="link-card-icon">
+            <i data-lucide="bar-chart-3" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">Metrics</div>
+        <div class="link-card-description">Tool call metrics dashboard</div>
+    </a>
+
+    <a href="/docs" class="card card-clickable link-card" title="Открыть Swagger документацию">
+        <div class="link-card-icon">
+            <i data-lucide="code" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">Swagger</div>
+        <div class="link-card-description">Interactive API documentation</div>
+    </a>
+
+    <a href="/redoc" class="card card-clickable link-card" title="Открыть ReDoc документацию">
+        <div class="link-card-icon">
+            <i data-lucide="book-open" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">ReDoc</div>
+        <div class="link-card-description">Alternative documentation</div>
+    </a>
+
+    <a href="/openapi.json" class="card card-clickable link-card" title="Получить OpenAPI спецификацию">
+        <div class="link-card-icon">
+            <i data-lucide="file-json" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">OpenAPI</div>
+        <div class="link-card-description">OpenAPI 3.* specification</div>
+    </a>
+</div>
+
+<div class="project-info">
+    <div class="card-header">
+        <h3 class="card-title flex items-center gap-2">
+            <i data-lucide="info" style="width: 20px; height: 20px;"></i>
+            About the Project
+        </h3>
+    </div>
+    <div class="card-content">
+        <table class="info-table">
+            <tr>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="tag" style="width: 16px; height: 16px; color: var(--color-muted-fg);"></i>
+                        Version
+                    </div>
+                </td>
+                <td><span class="badge badge-secondary">{{ app_version }}</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="layers" style="width: 16px; height: 16px; color: var(--color-muted-fg);"></i>
+                        Architecture
+                    </div>
+                </td>
+                <td>MCP server (FastMCP, streamable HTTP) inside FastAPI</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="plug" style="width: 16px; height: 16px; color: var(--color-muted-fg);"></i>
+                        MCP Endpoint
+                    </div>
+                </td>
+                <td><span class="badge badge-secondary">/mcp</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="database" style="width: 16px; height: 16px; color: var(--color-muted-fg);"></i>
+                        Database
+                    </div>
+                </td>
+                <td>SQLModel (PostgreSQL)</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield" style="width: 16px; height: 16px; color: var(--color-muted-fg);"></i>
+                        Authentication
+                    </div>
+                </td>
+                <td>Keycloak JWT (Bearer)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

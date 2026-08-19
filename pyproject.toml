@@ -1,0 +1,55 @@
+[project]
+name = "apisix-mcp"
+version = "0.5.10"
+header = "APISIX-MCP"
+description = "MCP tools for synchronizing APISIX routes with MPSDK functions in GitLab."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "micro",
+    "sqlmodel>=0.0.38",
+    "fastmcp==3.4.7",
+    "httpx>=0.28.1",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.25.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.25.3",
+    "pytest-cov>=6.0.0",
+    "httpx>=0.28.1",
+]
+
+[tool.uv]
+managed = true
+[tool.uv.workspace]
+members = []
+
+[tool.uv.sources]
+micro = { git = "http://gitlab-ci-token:${GITLAB_TOKEN_CLONE}@gitlab2.auto.local/digital-staff/python/micro.git", tag = "1.0.0" }
+# micro = { path = "../micro", editable = false }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+ignore = ["B008"]
+
+[tool.setuptools]
+packages = ["src"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.20.0",
+    "ruff>=0.15.7",
+]

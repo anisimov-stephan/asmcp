@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ app_header }}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand" title="Перейти на главную страницу">
+                <i data-lucide="hexagon" style="width: 24px; height: 24px; color: hsl(240 5% 60%);"></i>
+                {{ app_header }}
+            </a>
+            <ul class="nav-menu">
+                <li>
+                    <a href="/metrics" title="Tool Call Metrics">
+                        <i data-lucide="bar-chart-3" style="width: 16px; height: 16px;"></i>
+                        Metrics
+                    </a>
+                </li>
+                <li>
+                    <a href="/micro/" title="Micro Dashboard">
+                        <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/docs" title="API Documentation">
+                        <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+                        Docs
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Переключить тему">
+                    <i data-lucide="sun" style="width: 16px; height: 16px;" class="theme-icon-light"></i>
+                    <i data-lucide="moon" style="width: 16px; height: 16px; display: none;" class="theme-icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>{{ app_header }} v{{ app_version }}</p>
+    </footer>
+
+    <script src="/static/lucide.min.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const lightIcon = document.querySelector('.theme-icon-light');
+        const darkIcon = document.querySelector('.theme-icon-dark');
+
+        // Check for saved theme preference or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcons(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        });
+
+        function updateThemeIcons(theme) {
+            if (theme === 'dark') {
+                lightIcon.style.display = 'none';
+                darkIcon.style.display = 'block';
+            } else {
+                lightIcon.style.display = 'block';
+                darkIcon.style.display = 'none';
+            }
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

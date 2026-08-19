@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ app_header }} - Metrics{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div style="display: inline-flex; align-items: center; justify-content: center; width: 4rem; height: 4rem; border-radius: var(--radius); background-color: var(--color-primary); color: var(--color-primary-fg); margin-bottom: var(--space-6);">
+        <i data-lucide="bar-chart-3" style="width: 32px; height: 32px;"></i>
+    </div>
+    <h1 class="hero-title">Tool Call Metrics</h1>
+    <p class="hero-description">
+        MCP tool invocations recorded in the tool_calls table.
+    </p>
+</div>
+
+<div class="links-grid">
+    <div class="card link-card">
+        <div class="link-card-icon">
+            <i data-lucide="activity" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">{{ metrics.total }}</div>
+        <div class="link-card-description">Total tool calls</div>
+    </div>
+
+    <div class="card link-card">
+        <div class="link-card-icon">
+            <i data-lucide="check-circle" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">{{ metrics.by_outcome.get('success', 0) }}</div>
+        <div class="link-card-description">Succeeded</div>
+    </div>
+
+    <div class="card link-card">
+        <div class="link-card-icon">
+            <i data-lucide="x-circle" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">{{ metrics.by_outcome.get('error', 0) }}</div>
+        <div class="link-card-description">Errors</div>
+    </div>
+
+    <div class="card link-card">
+        <div class="link-card-icon">
+            <i data-lucide="rotate-ccw" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="link-card-title">{{ metrics.by_outcome.get('compensated', 0) }}</div>
+        <div class="link-card-description">Compensated</div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: var(--space-6);">
+    <div class="card-header">
+        <h3 class="card-title flex items-center gap-2">
+            <i data-lucide="wrench" style="width: 20px; height: 20px;"></i>
+            Calls per Tool
+        </h3>
+    </div>
+    <div class="card-content">
+        <table class="info-table">
+            <tr>
+                <th style="text-align: left;">Tool</th>
+                <th style="text-align: left;">Calls</th>
+                <th style="text-align: left;">Avg duration, ms</th>
+            </tr>
+            {% for row in metrics.by_tool %}
+            <tr>
+                <td>{{ row.tool_name }}</td>
+                <td>{{ row.count }}</td>
+                <td>{{ row.avg_duration_ms if row.avg_duration_ms is not none else "—" }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">No tool calls recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title flex items-center gap-2">
+            <i data-lucide="history" style="width: 20px; height: 20px;"></i>
+            Recent Calls
+        </h3>
+    </div>
+    <div class="card-content">
+        <table class="info-table">
+            <tr>
+                <th style="text-align: left;">Time</th>
+                <th style="text-align: left;">Tool</th>
+                <th style="text-align: left;">Target</th>
+                <th style="text-align: left;">Outcome</th>
+                <th style="text-align: left;">Duration, ms</th>
+            </tr>
+            {% for row in metrics.recent %}
+            <tr>
+                <td>{{ row.created_at }}</td>
+                <td>{{ row.tool_name }}</td>
+                <td>{{ row.target_uri }}</td>
+                <td><span class="badge badge-secondary">{{ row.outcome }}</span></td>
+                <td>{{ row.duration_ms }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">No tool calls recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
